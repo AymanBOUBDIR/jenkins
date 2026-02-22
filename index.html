@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TP - Page de Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --border: #1e1e2e;
+      --accent: #00ff88;
+      --accent2: #ff6b35;
+      --text: #e0e0e0;
+      --muted: #666;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 60px;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 4px 12px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Status bar */
+    .status-bar {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 40px;
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      animation: fadeUp 0.6s 0.2s ease both;
+      flex-wrap: wrap;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    .dot.orange { background: var(--accent2); }
+    .dot.grey { background: var(--muted); animation: none; }
+
+    /* Cards grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .card:nth-child(1) { animation-delay: 0.3s; }
+    .card:nth-child(2) { animation-delay: 0.4s; }
+    .card:nth-child(3) { animation-delay: 0.5s; }
+
+    .card-icon {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    .card p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* Form section */
+    .form-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin-bottom: 40px;
+      animation: fadeUp 0.6s 0.6s ease both;
+    }
+
+    .form-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+
+    textarea { height: 100px; resize: vertical; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 14px 32px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn:hover { opacity: 0.85; }
+    .btn:active { transform: scale(0.98); }
+
+    /* Result box */
+    .result-box {
+      display: none;
+      background: var(--bg);
+      border: 1px solid var(--accent);
+      padding: 16px;
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    /* Log terminal */
+    .terminal {
+      background: #050508;
+      border: 1px solid var(--border);
+      padding: 24px;
+      font-size: 12px;
+      line-height: 1.8;
+      animation: fadeUp 0.6s 0.7s ease both;
+      margin-bottom: 40px;
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .terminal-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    .log-line { margin-bottom: 4px; }
+    .log-line.success { color: var(--accent); }
+    .log-line.warning { color: #ffcc00; }
+    .log-line.error { color: #ff4444; }
+    .log-line.info { color: var(--muted); }
+
+    .cursor {
+      display: inline-block;
+      width: 8px; height: 14px;
+      background: var(--accent);
+      animation: blink 1s infinite;
+      vertical-align: middle;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      animation: fadeUp 0.6s 0.8s ease both;
+    }
+
+    /* Animations */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .status-bar { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="tag">TP — Travaux Pratiques</div>
+    <h1>Page de <span>Test</span></h1>
+    <p class="subtitle">DevOps · Docker · Jenkins · CI/CD</p>
+  </header>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-item">
+      <div class="dot"></div>
+      <span>Jenkins: Running</span>
+    </div>
+    <div class="status-item">
+      <div class="dot"></div>
+      <span>Docker: Active</span>
+    </div>
+    <div class="status-item">
+      <div class="dot orange"></div>
+      <span>Build: In Progress</span>
+    </div>
+    <div class="status-item">
+      <div class="dot grey"></div>
+      <span>Tests: Pending</span>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon">🐳</div>
+      <h3>Docker</h3>
+      <p>Conteneurisation de l'application avec Docker. Image basée sur jenkins/jenkins:lts.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <h3>Jenkins</h3>
+      <p>Automatisation CI/CD. Pipeline de build, test et déploiement continu.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <h3>Déploiement</h3>
+      <p>Déploiement automatisé sur VM Linux. Port 8080 exposé et configuré.</p>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="form-section">
+    <h2>Formulaire de Test</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" placeholder="Votre nom" id="nom"/>
+      </div>
+      <div class="form-group">
+        <label>Prénom</label>
+        <input type="text" placeholder="Votre prénom" id="prenom"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Module</label>
+      <select id="module">
+        <option value="">-- Sélectionner --</option>
+        <option>Virtualisation & Cloud</option>
+        <option>DevOps & CI/CD</option>
+        <option>Administration Linux</option>
+        <option>Docker & Kubernetes</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Observations</label>
+      <textarea placeholder="Vos remarques sur le TP..." id="obs"></textarea>
+    </div>
+    <button class="btn" onclick="submitForm()">Soumettre →</button>
+    <div class="result-box" id="result"></div>
+  </div>
+
+  <!-- Terminal -->
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="terminal-dot" style="background:#ff5f57"></div>
+      <div class="terminal-dot" style="background:#febc2e"></div>
+      <div class="terminal-dot" style="background:#28c840"></div>
+      <span style="color:var(--muted); font-size:11px; margin-left:8px;">jenkins@docker ~ logs</span>
+    </div>
+    <div class="log-line info">[2026-02-22 10:00:01] Starting Jenkins container...</div>
+    <div class="log-line success">[2026-02-22 10:00:05] Jenkins is fully up and running</div>
+    <div class="log-line info">[2026-02-22 10:00:06] Listening on port 8080</div>
+    <div class="log-line warning">[2026-02-22 10:01:12] Jenkins URL not configured</div>
+    <div class="log-line success">[2026-02-22 10:02:30] Security realm configured</div>
+    <div class="log-line success">[2026-02-22 10:03:00] Admin user created successfully</div>
+    <div class="log-line info">[2026-02-22 10:03:01] Ready for CI/CD pipelines <span class="cursor"></span></div>
+  </div>
+
+  <footer>
+    TP DevOps &mdash; ENSET Master &mdash; 2026
+  </footer>
+
+</div>
+
+<script>
+  function submitForm() {
+    const nom = document.getElementById('nom').value;
+    const prenom = document.getElementById('prenom').value;
+    const module = document.getElementById('module').value;
+    const result = document.getElementById('result');
+
+    if (!nom || !prenom || !module) {
+      result.style.display = 'block';
+      result.style.color = '#ff4444';
+      result.style.borderColor = '#ff4444';
+      result.textContent = '> ERREUR: Veuillez remplir tous les champs obligatoires.';
+      return;
+    }
+
+    result.style.display = 'block';
+    result.style.color = 'var(--accent)';
+    result.style.borderColor = 'var(--accent)';
+    result.textContent = `> OK: ${prenom} ${nom} — Module: ${module} — Soumis avec succès ✓`;
+  }
+</script>
+</body>
+</html>
