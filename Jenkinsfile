@@ -1,3 +1,4 @@
+
 pipeline {
     environment {
         registry = "boubdirayman/tp5projv2"
@@ -33,6 +34,13 @@ pipeline {
                         dockerImage.push()
                     }
                 }
+            }
+        }
+        stage('Deploy image') {
+            steps {
+                sh "docker stop tp5_container || true"
+                sh "docker rm tp5_container || true"
+                sh "docker run -d --name tp5_container -p 80:80 boubdirayman/tp5projv2:$BUILD_NUMBER"
             }
         }
     }
