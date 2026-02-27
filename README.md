@@ -1,8 +1,5 @@
 # TP5 - Docker Engine, Jenkins, CI/CD
 
-> **Master II BDCC – Big Data et Cloud Computing**  
-> Virtualisation, Cloud Computing, DevOps | 2025/2026
-
 ---
 
 ## 📋 Description
